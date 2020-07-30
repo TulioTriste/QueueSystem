@@ -1,0 +1,41 @@
+Ranks:
+  default:
+    Priority: 6
+  Founder:
+    Priority: 0
+    
+list-ranks:
+  default:
+    Priority: 6
+  admin:
+    Priority: 0
+    
+utilities: 
+  ports:
+    survival: 25567
+    skywars: 25568
+    minigames: 25570
+  servers:
+    - 'survival'
+    - 'skywars'
+    - 'minigames'
+    
+queue:
+  send-delay: 10  ## 20 = 1 segundo mi rey.
+  servers:
+    - 'Survival'
+    - 'Skywars'
+    - 'MiniGames'
+    
+NOT_IN_QUEUE: "&cYou are not queued for any modality!"
+QUEUE_LEFT: "&eYou are no longer in &6%server% &eQueue."
+NO_PERMISSION: "&cNo Permissions."
+INVALID_QUEUE: "&cQueue not found."
+QUEUE_PAUSED: "&c%server% queue has been paused."
+QUEUE_UNPAUSED: "&a%server% queue has been resumed."
+INVALID_NUMBER: "&cInvalid number."
+LIMIT_SET: "&a%server% queue limit set to %amount%."
+QUEUE_SENT: "&aSending to %server%."
+ALREADY_QUEUEING: "&cYou are already queueing for %server%."
+QUEUE_JOINED: "&aJoining %server% Queue."
+CONNECTING: "&aConnecting to %server%."

@@ -1,0 +1,11 @@
+name: QueueSystem
+main: me.tulio.queue.QueueMain
+version: 1.0-SNAPSHOT
+author: TulioTriste
+commands:
+  leavequeue: 
+  pausequeue: 
+  playqueue: 
+    aliases: ["play"]
+  setlimit:
+    aliases: ["limit"]
