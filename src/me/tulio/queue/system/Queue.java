@@ -4,8 +4,11 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
 import me.tulio.queue.QueueMain;
+import me.tulio.queue.utilities.Color;
 
 import java.util.Collections;
+import org.bukkit.plugin.Plugin;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -24,7 +27,7 @@ public class Queue
     private boolean paused;
     private int limit;
     
-    public Queue(String server) {
+    public Queue(final String server) {
         this.server = server;
         this.list = new ArrayList<OfflinePlayer>();
         this.taskMap = new HashMap<OfflinePlayer, BukkitTask>();
@@ -32,10 +35,10 @@ public class Queue
         this.limit = 400;
         new BukkitRunnable() {
             public void run() {
-                for (OfflinePlayer o : Queue.this.list) {
+                for (final OfflinePlayer o : Queue.this.list) {
                     if (o.isOnline()) {
-                        Player p = (Player)o;
-                        for (String s : QueueMain.getPlugin().getConfig().getStringList("QUEUE_MESSAGE")) {
+                        final Player p = (Player)o;
+                        for (final String s : QueueMain.getPlugin().getConfig().getStringList("QUEUE_MESSAGE")) {
                             p.sendMessage(ChatColor.translateAlternateColorCodes('&', s.replace("%position%", String.valueOf(Queue.this.getPosition(p))).replace("%total%", String.valueOf(Queue.this.getSize())).replace("%server%", server)));
                         }
                     }
@@ -44,22 +47,24 @@ public class Queue
                     }
                 }
             }
-        }.runTaskTimer(QueueMain.getPlugin(), 300L, 300L);
+        }.runTaskTimer((Plugin)QueueMain.getPlugin(), 300L, 300L);
     }
     
-    public void addEntry(OfflinePlayer p) {
+    public void addEntry(final OfflinePlayer p) {
         if (this.list.contains(p)) {
             return;
         }
         if (QueueMain.getPlugin().getQueueManager().getPriority(p) == 0) {
-            Player o = (Player)p;
+            final Player o = (Player)p;
             this.sendDirect(o);
-            o.sendMessage(QueueMain.getPlugin().getConfig().getString("QUEUE_SENT").replace("%server%", this.server));
+            for(String lines : QueueMain.getPlugin().getConfig().getStringList("QUEUE_SENT")) {
+                o.sendMessage(Color.translate(lines.replace("%server%", this.server)));
+            }
             return;
         }
         this.list.add(p);
-        for (OfflinePlayer o2 : this.list) {
-            int pos = this.list.indexOf(o2);
+        for (final OfflinePlayer o2 : this.list) {
+            final int pos = this.list.indexOf(o2);
             if (p != o2 && QueueMain.getPlugin().getQueueManager().getPriority(p) < QueueMain.getPlugin().getQueueManager().getPriority(o2)) {
                 Collections.swap(this.list, pos, this.list.size() - 1);
             }
@@ -70,7 +75,7 @@ public class Queue
         return this.list;
     }
     
-    public void removeEntry(OfflinePlayer p) {
+    public void removeEntry(final OfflinePlayer p) {
         this.list.remove(p);
     }
     
@@ -78,29 +83,29 @@ public class Queue
         return this.list.size();
     }
     
-    public OfflinePlayer getPlayerAt(int i) {
+    public OfflinePlayer getPlayerAt(final int i) {
         return this.list.get(i);
     }
     
-    public int getPosition(Player p) {
+    public int getPosition(final Player p) {
         return this.list.indexOf(p) + 1;
     }
     
     public void sendFirst() {
         if (!this.list.isEmpty()) {
-            Player p = this.list.get(0).getPlayer();
-            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            final Player p = this.list.get(0).getPlayer();
+            final ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("Connect");
             out.writeUTF(this.server);
-            p.sendPluginMessage(QueueMain.getPlugin(), "BungeeCord", out.toByteArray());
+            p.sendPluginMessage((Plugin)QueueMain.getPlugin(), QueueMain.getPlugin().getConfig().getString("MessagingChannel"), out.toByteArray());
         }
     }
     
-    public void sendDirect(Player p) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+    public void sendDirect(final Player p) {
+        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(this.server);
-        p.sendPluginMessage(QueueMain.getPlugin(), "BungeeCord", out.toByteArray());
+        p.sendPluginMessage((Plugin)QueueMain.getPlugin(), QueueMain.getPlugin().getConfig().getString("MessagingChannel"), out.toByteArray());
     }
     
     public String getServer() {
@@ -123,40 +128,40 @@ public class Queue
         return this.limit;
     }
     
-    public void setServer(String server) {
+    public void setServer(final String server) {
         this.server = server;
     }
     
-    public void setList(List<OfflinePlayer> list) {
+    public void setList(final List<OfflinePlayer> list) {
         this.list = list;
     }
     
-    public void setTaskMap(Map<OfflinePlayer, BukkitTask> taskMap) {
+    public void setTaskMap(final Map<OfflinePlayer, BukkitTask> taskMap) {
         this.taskMap = taskMap;
     }
     
-    public void setPaused(boolean paused) {
+    public void setPaused(final boolean paused) {
         this.paused = paused;
     }
     
-    public void setLimit(int limit) {
+    public void setLimit(final int limit) {
         this.limit = limit;
     }
     
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == this) {
             return true;
         }
         if (!(o instanceof Queue)) {
             return false;
         }
-        Queue other = (Queue)o;
+        final Queue other = (Queue)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        Object this$server = this.getServer();
-        Object other$server = other.getServer();
+        final Object this$server = this.getServer();
+        final Object other$server = other.getServer();
         Label_0065: {
             if (this$server == null) {
                 if (other$server == null) {
@@ -168,8 +173,8 @@ public class Queue
             }
             return false;
         }
-        Object this$list = this.getList();
-        Object other$list = other.getList();
+        final Object this$list = this.getList();
+        final Object other$list = other.getList();
         Label_0102: {
             if (this$list == null) {
                 if (other$list == null) {
@@ -181,8 +186,8 @@ public class Queue
             }
             return false;
         }
-        Object this$taskMap = this.getTaskMap();
-        Object other$taskMap = other.getTaskMap();
+        final Object this$taskMap = this.getTaskMap();
+        final Object other$taskMap = other.getTaskMap();
         if (this$taskMap == null) {
             if (other$taskMap == null) {
                 return this.isPaused() == other.isPaused() && this.getLimit() == other.getLimit();
@@ -194,19 +199,19 @@ public class Queue
         return false;
     }
     
-    protected boolean canEqual(Object other) {
+    protected boolean canEqual(final Object other) {
         return other instanceof Queue;
     }
     
     @Override
     public int hashCode() {
-        int PRIME = 59;
+        final int PRIME = 59;
         int result = 1;
-        Object $server = this.getServer();
+        final Object $server = this.getServer();
         result = result * PRIME + (($server == null) ? 43 : $server.hashCode());
-        Object $list = this.getList();
+        final Object $list = this.getList();
         result = result * PRIME + (($list == null) ? 43 : $list.hashCode());
-        Object $taskMap = this.getTaskMap();
+        final Object $taskMap = this.getTaskMap();
         result = result * PRIME + (($taskMap == null) ? 43 : $taskMap.hashCode());
         result = result * PRIME + (this.isPaused() ? 79 : 97);
         result = result * PRIME + this.getLimit();

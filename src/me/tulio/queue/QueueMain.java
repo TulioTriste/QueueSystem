@@ -23,7 +23,7 @@ public class QueueMain extends JavaPlugin {
 	private static QueueMain plugin;
     private QueueManager queueManager;
     private Permission perms;
-	private Chat chat;
+    private Chat chat;
 	
 	@Override
 	public void onEnable() {
@@ -33,9 +33,9 @@ public class QueueMain extends JavaPlugin {
         }
         saveDefaultConfig();
         queueManager = new QueueManager();
+		registerCommands();
 		setUpPermissions();
 		setUpChat();
-		registerCommands();
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         Bukkit.getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new ServerUtils());
         ServerUtils.startPlayerCountTask();

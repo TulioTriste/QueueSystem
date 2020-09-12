@@ -20,16 +20,12 @@ public class PlayQueueCommand implements CommandExecutor {
 			return true;
 		}
 		Player player = (Player) sender;
-		List<String> servers = new ArrayList<>(QueueMain.getPlugin().getConfig().getStringList("Queue.Servers"));
+		List<String> servers = new ArrayList<>(QueueMain.getPlugin().getConfig().getStringList("queue.servers"));
 		if(args.length == 0) {
-			player.sendMessage(Color.translate("Usage: &c/" + label + " " + servers.toString().replace("[", "").replace("]", "")));
+			player.sendMessage(Color.translate("&cUse: /" + label + " " + servers.toString().replace("[", "").replace("]", "")));
 			return true;
 		}
-		try {
-			QueueMain.getPlugin().getQueueManager().getQueue(args[0]).addEntry(player);;
-		} catch (Exception e) {
-			player.sendMessage(Color.translate("&cServer " + args[0] + " doesn´t exist."));
-		}
+		QueueMain.getPlugin().getQueueManager().getQueue("hcf").addEntry(player);
 		return true;
 	}
 

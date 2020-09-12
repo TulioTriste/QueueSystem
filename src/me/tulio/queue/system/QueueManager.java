@@ -3,7 +3,6 @@ package me.tulio.queue.system;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.OfflinePlayer;
-
 import me.tulio.queue.QueueMain;
 import me.tulio.queue.utilities.ServerUtils;
 
@@ -21,13 +20,13 @@ public class QueueManager implements Listener
     public QueueManager() {
         this.queues = new ArrayList<Queue>();
         Bukkit.getPluginManager().registerEvents(this, QueueMain.getPlugin());
-        for (String s : QueueMain.getPlugin().getConfig().getStringList("queue.servers")) {
+        for (final String s : QueueMain.getPlugin().getConfig().getStringList("queue.servers")) {
             this.queues.add(new Queue(s));
         }
         new BukkitRunnable() {
             public void run() {
-                for (Queue q : QueueManager.this.queues) {
-                    int playerCount = ServerUtils.getPlayerCount(q.getServer());
+                for (final Queue q : QueueManager.this.queues) {
+                    final int playerCount = ServerUtils.getPlayerCount(q.getServer());
                     if (!q.isPaused() && !q.getPlayers().isEmpty() && playerCount < q.getLimit()) {
                         if (q.getPlayerAt(0).isOnline()) {
                             q.sendFirst();
@@ -35,7 +34,7 @@ public class QueueManager implements Listener
                         if (q.getPlayerAt(0).isOnline()) {
                             continue;
                         }
-                        Player p = (Player)q.getPlayerAt(0);
+                        final Player p = (Player)q.getPlayerAt(0);
                         if (q.getPlayers().contains(p)) {
                             q.getPlayers().remove(p);
                         }
@@ -50,8 +49,8 @@ public class QueueManager implements Listener
         }.runTaskTimer(QueueMain.getPlugin(), 20L, (long)QueueMain.getPlugin().getConfig().getInt("queue.send-delay"));
     }
     
-    public Queue getQueue(OfflinePlayer p) {
-        for (Queue q : this.queues) {
+    public Queue getQueue(final OfflinePlayer p) {
+        for (final Queue q : this.queues) {
             if (q.getPlayers().contains(p)) {
                 return q;
             }
@@ -59,8 +58,8 @@ public class QueueManager implements Listener
         return null;
     }
     
-    public Queue getQueue(String s) {
-        for (Queue q : this.queues) {
+    public Queue getQueue(final String s) {
+        for (final Queue q : this.queues) {
             if (q.getServer().equalsIgnoreCase(s)) {
                 return q;
             }
@@ -68,18 +67,18 @@ public class QueueManager implements Listener
         return null;
     }
     
-    public String getQueueName(OfflinePlayer p) {
+    public String getQueueName(final OfflinePlayer p) {
         return this.getQueue(p).getServer();
     }
     
-    public int getPriority(OfflinePlayer p) {
-        return QueueMain.getPlugin().getConfig().getInt("list-ranks." + QueueMain.getPlugin().getPerms().getPrimaryGroup(null, p) + ".priority");
+    public int getPriority(final OfflinePlayer p) {
+        return QueueMain.getPlugin().getConfig().getInt("ranks." + QueueMain.getPlugin().getPerms().getPrimaryGroup(null, p) + ".priority");
     }
     
     @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
-        Player p = e.getPlayer();
-        for (Queue q : this.queues) {
+    public void onQuit(final PlayerQuitEvent e) {
+        final Player p = e.getPlayer();
+        for (final Queue q : this.queues) {
             if (q.getPlayers().contains(p)) {
                 q.removeEntry((OfflinePlayer)p);
             }

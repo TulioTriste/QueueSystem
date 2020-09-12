@@ -11,30 +11,34 @@ import me.tulio.queue.utilities.Color;
 
 import org.bukkit.command.CommandExecutor;
 
-public class SetLimitCommand implements CommandExecutor
-{
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!sender.hasPermission("hub.queue.setlimit")) {
-            sender.sendMessage(Color.translate(QueueMain.getPlugin().getConfig().getString("NO_PERMISSION")));
-            return true;
-        }
-        if (args.length != 2) {
-            sender.sendMessage("§cUsage: /" + label + " <amount>");
-            return true;
-        }
-        String server = args[0];
-        if (QueueMain.getPlugin().getQueueManager().getQueue(server) == null) {
-            sender.sendMessage(Color.translate(QueueMain.getPlugin().getConfig().getString("INVALID_QUEUE")));
-            return true;
-        }
-        Queue q = QueueMain.getPlugin().getQueueManager().getQueue(server);
-        if (Ints.tryParse(args[1]) == null) {
-            sender.sendMessage(Color.translate(QueueMain.getPlugin().getConfig().getString("INVALID_NUMBER")));
-            return true;
-        }
-        int i = Ints.tryParse(args[1]);
-        q.setLimit(i);
-        sender.sendMessage(Color.translate(QueueMain.getPlugin().getConfig().getString("LIMIT_SET").replace("%server%", q.getServer()).replace("%amount%", String.valueOf(i))));
-        return true;
-    }
+public class SetLimitCommand implements CommandExecutor {
+	
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (!sender.hasPermission("hub.queue.setlimit")) {
+			sender.sendMessage(Color.translate(QueueMain.getPlugin().getConfig().getString("NO_PERMISSION")));
+			return true;
+		}
+		if (args.length != 2) {
+			sender.sendMessage("§cUsage: /" + label + " <amount>");
+			return true;
+		}
+		String server = args[0];
+		if (QueueMain.getPlugin().getQueueManager().getQueue(server) == null) {
+			for(String lines : QueueMain.getPlugin().getConfig().getStringList("INVALID_QUEUE")) {
+				sender.sendMessage(Color.translate(lines));
+			}
+			return true;
+		}
+		Queue q = QueueMain.getPlugin().getQueueManager().getQueue(server);
+		if (Ints.tryParse(args[1]) == null) {
+			sender.sendMessage(Color.translate(QueueMain.getPlugin().getConfig().getString("INVALID_NUMBER")));
+			return true;
+		}
+		int i = Ints.tryParse(args[1]);
+		q.setLimit(i);
+		for(String lines : QueueMain.getPlugin().getConfig().getStringList("LIMIT_SET")) {
+			sender.sendMessage(Color.translate(lines.replace("%server%", q.getServer()).replace("%amount%", String.valueOf(i))));
+		}
+		return true;
+	}
 }

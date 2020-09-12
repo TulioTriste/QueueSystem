@@ -4,8 +4,10 @@ version: 1.0-SNAPSHOT
 author: TulioTriste
 commands:
   leavequeue: 
+    aliases: ["leave", "salir", "salircola"]
   pausequeue: 
+    aliases: ["pause", "pausarcola", "detenercola"]
   playqueue: 
     aliases: ["play"]
   setlimit:
-    aliases: ["limit"]
+    aliases: ["limit", "limitar"]

@@ -1,14 +1,11 @@
-Ranks:
-  default:
-    Priority: 6
-  Founder:
-    Priority: 0
-    
+
+MessagingChannel: 'BungeeCord'
+
 list-ranks:
   default:
-    Priority: 6
+    priority: 6
   admin:
-    Priority: 0
+    priority: 0
     
 utilities: 
   ports:
@@ -27,15 +24,24 @@ queue:
     - 'Skywars'
     - 'MiniGames'
     
-NOT_IN_QUEUE: "&cYou are not queued for any modality!"
-QUEUE_LEFT: "&eYou are no longer in &6%server% &eQueue."
-NO_PERMISSION: "&cNo Permissions."
-INVALID_QUEUE: "&cQueue not found."
-QUEUE_PAUSED: "&c%server% queue has been paused."
-QUEUE_UNPAUSED: "&a%server% queue has been resumed."
-INVALID_NUMBER: "&cInvalid number."
-LIMIT_SET: "&a%server% queue limit set to %amount%."
-QUEUE_SENT: "&aSending to %server%."
-ALREADY_QUEUEING: "&cYou are already queueing for %server%."
-QUEUE_JOINED: "&aJoining %server% Queue."
-CONNECTING: "&aConnecting to %server%."
+NO_PERMISSION: "&cNo tienes permisos."
+INVALID_NUMBER: "&cNumero Invalido."
+NOT_IN_QUEUE: 
+  - "&cNo te encuentras en ninguna Cola!"
+QUEUE_LEFT: 
+  - "&bNo estas en la cola de &3%server%&b."
+INVALID_QUEUE: 
+  - "&cCola no encontrada."
+QUEUE_PAUSED: 
+  - "&cLa cola de %server% ha sido pausada."
+QUEUE_UNPAUSED: 
+  - "&aLa cola de %server% ha sido resumiad."
+LIMIT_SET: 
+  - "&aSe ha impuesto un limite de %amount% en la cola %server%."
+QUEUE_MESSAGE:
+  - "&7&m------------------------------------"
+  - "&bEstas en la posicion &3&l%position%&b/&3&l%total% &ben &3&l%server%&b."
+  - "&bPara obtener una prioridad mas alta, compra paquete de permisos."
+  - "&7&m------------------------------------"
+QUEUE_SENT: 
+  - "&aEnviandote a %server%."
